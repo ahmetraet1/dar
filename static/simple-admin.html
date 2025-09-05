@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة - دار التراث الفلسطيني</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e8 100%);
+            color: #2c5530;
+            direction: rtl;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c5530 0%, #8B4513 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(44, 85, 48, 0.1);
+            border-top: 4px solid #2c5530;
+        }
+        
+        .section h3 {
+            color: #2c5530;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c5530;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5530;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #2c5530 0%, #8B4513 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 85, 48, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .items-list {
+            margin-top: 20px;
+        }
+        
+        .item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #2c5530;
+        }
+        
+        .item h4 {
+            color: #2c5530;
+            margin-bottom: 5px;
+        }
+        
+        .item p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hidden { display: none; }
+        
+        @media (max-width: 768px) {
+            .sections { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>لوحة الإدارة - دار التراث الفلسطيني</h1>
+            <p>إدارة المنتجات والفعاليات والمكتبة التراثية</p>
+        </div>
+
+        <div id="alerts"></div>
+
+        <div class="sections">
+            <!-- إدارة المنتجات -->
+            <div class="section">
+                <h3>إدارة المنتجات</h3>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>اسم المنتج (عربي)</label>
+                        <input type="text" id="product-name-ar" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>اسم المنتج (تركي)</label>
+                        <input type="text" id="product-name-tr" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>اسم المنتج (إنجليزي)</label>
+                        <input type="text" id="product-name-en" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (عربي)</label>
+                        <textarea id="product-desc-ar" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (تركي)</label>
+                        <textarea id="product-desc-tr" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (إنجليزي)</label>
+                        <textarea id="product-desc-en" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر (ليرة تركية)</label>
+                        <input type="number" id="product-price" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الفئة</label>
+                        <select id="product-category" class="form-control" required>
+                            <option value="clothing">ملابس</option>
+                            <option value="food">طعام</option>
+                            <option value="crafts">حرف يدوية</option>
+                            <option value="books">كتب</option>
+                            <option value="accessories">إكسسوارات</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">إضافة منتج</button>
+                    <button type="button" class="btn" onclick="loadProducts()">عرض المنتجات</button>
+                </form>
+                <div id="products-list" class="items-list"></div>
+            </div>
+
+            <!-- إدارة الفعاليات -->
+            <div class="section">
+                <h3>إدارة الفعاليات</h3>
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label>عنوان الفعالية (عربي)</label>
+                        <input type="text" id="event-title-ar" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان الفعالية (تركي)</label>
+                        <input type="text" id="event-title-tr" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان الفعالية (إنجليزي)</label>
+                        <input type="text" id="event-title-en" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (عربي)</label>
+                        <textarea id="event-desc-ar" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (تركي)</label>
+                        <textarea id="event-desc-tr" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (إنجليزي)</label>
+                        <textarea id="event-desc-en" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ الفعالية</label>
+                        <input type="date" id="event-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المكان</label>
+                        <input type="text" id="event-location" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">إضافة فعالية</button>
+                    <button type="button" class="btn" onclick="loadEvents()">عرض الفعاليات</button>
+                </form>
+                <div id="events-list" class="items-list"></div>
+            </div>
+
+            <!-- إدارة المكتبة التراثية -->
+            <div class="section">
+                <h3>إدارة المكتبة التراثية</h3>
+                <form id="libraryForm">
+                    <div class="form-group">
+                        <label>عنوان الكتاب/المرجع (عربي)</label>
+                        <input type="text" id="library-title-ar" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان الكتاب/المرجع (تركي)</label>
+                        <input type="text" id="library-title-tr" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان الكتاب/المرجع (إنجليزي)</label>
+                        <input type="text" id="library-title-en" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المؤلف</label>
+                        <input type="text" id="library-author" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (عربي)</label>
+                        <textarea id="library-desc-ar" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (تركي)</label>
+                        <textarea id="library-desc-tr" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (إنجليزي)</label>
+                        <textarea id="library-desc-en" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>سنة النشر</label>
+                        <input type="number" id="library-year" class="form-control" min="1900" max="2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label>النوع</label>
+                        <select id="library-type" class="form-control" required>
+                            <option value="book">كتاب</option>
+                            <option value="document">وثيقة</option>
+                            <option value="research">بحث</option>
+                            <option value="article">مقال</option>
+                            <option value="manuscript">مخطوطة</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">إضافة للمكتبة</button>
+                    <button type="button" class="btn" onclick="loadLibrary()">عرض المكتبة</button>
+                </form>
+                <div id="library-list" class="items-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إظهار التنبيهات
+        function showAlert(message, type = 'success') {
+            const alertsDiv = document.getElementById('alerts');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alertsDiv.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+
+        // إدارة المنتجات
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const product = {
+                name: {
+                    ar: document.getElementById('product-name-ar').value,
+                    tr: document.getElementById('product-name-tr').value,
+                    en: document.getElementById('product-name-en').value
+                },
+                description: {
+                    ar: document.getElementById('product-desc-ar').value,
+                    tr: document.getElementById('product-desc-tr').value,
+                    en: document.getElementById('product-desc-en').value
+                },
+                price: parseFloat(document.getElementById('product-price').value),
+                category: document.getElementById('product-category').value
+            };
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+
+                if (response.ok) {
+                    showAlert('تم إضافة المنتج بنجاح');
+                    this.reset();
+                    loadProducts();
+                } else {
+                    showAlert('فشل في إضافة المنتج', 'danger');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال', 'danger');
+            }
+        });
+
+        // تحميل المنتجات
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                const list = document.getElementById('products-list');
+                
+                list.innerHTML = '<h4>المنتجات الحالية:</h4>';
+                data.products.forEach(product => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `
+                        <h4>${product.name.ar}</h4>
+                        <p><strong>السعر:</strong> ${product.price} ليرة تركية</p>
+                        <p><strong>الفئة:</strong> ${product.category}</p>
+                        <button class="btn btn-danger" onclick="deleteProduct('${product.id}')">حذف</button>
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (error) {
+                showAlert('فشل في تحميل المنتجات', 'danger');
+            }
+        }
+
+        // حذف منتج
+        async function deleteProduct(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                try {
+                    const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        showAlert('تم حذف المنتج بنجاح');
+                        loadProducts();
+                    } else {
+                        showAlert('فشل في حذف المنتج', 'danger');
+                    }
+                } catch (error) {
+                    showAlert('خطأ في الاتصال', 'danger');
+                }
+            }
+        }
+
+        // إدارة الفعاليات
+        document.getElementById('eventForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const event = {
+                title: {
+                    ar: document.getElementById('event-title-ar').value,
+                    tr: document.getElementById('event-title-tr').value,
+                    en: document.getElementById('event-title-en').value
+                },
+                description: {
+                    ar: document.getElementById('event-desc-ar').value,
+                    tr: document.getElementById('event-desc-tr').value,
+                    en: document.getElementById('event-desc-en').value
+                },
+                date: document.getElementById('event-date').value,
+                location: document.getElementById('event-location').value
+            };
+
+            try {
+                const response = await fetch('/api/events', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(event)
+                });
+
+                if (response.ok) {
+                    showAlert('تم إضافة الفعالية بنجاح');
+                    this.reset();
+                    loadEvents();
+                } else {
+                    showAlert('فشل في إضافة الفعالية', 'danger');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال', 'danger');
+            }
+        });
+
+        // تحميل الفعاليات
+        async function loadEvents() {
+            try {
+                const response = await fetch('/api/events');
+                const data = await response.json();
+                const list = document.getElementById('events-list');
+                
+                list.innerHTML = '<h4>الفعاليات الحالية:</h4>';
+                data.events.forEach(event => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `
+                        <h4>${event.title.ar}</h4>
+                        <p><strong>التاريخ:</strong> ${event.date}</p>
+                        <p><strong>المكان:</strong> ${event.location}</p>
+                        <button class="btn btn-danger" onclick="deleteEvent('${event.id}')">حذف</button>
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (error) {
+                showAlert('فشل في تحميل الفعاليات', 'danger');
+            }
+        }
+
+        // حذف فعالية
+        async function deleteEvent(id) {
+            if (confirm('هل أنت متأكد من حذف هذه الفعالية؟')) {
+                try {
+                    const response = await fetch(`/api/events/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        showAlert('تم حذف الفعالية بنجاح');
+                        loadEvents();
+                    } else {
+                        showAlert('فشل في حذف الفعالية', 'danger');
+                    }
+                } catch (error) {
+                    showAlert('خطأ في الاتصال', 'danger');
+                }
+            }
+        }
+
+        // إدارة المكتبة
+        document.getElementById('libraryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const libraryItem = {
+                title: {
+                    ar: document.getElementById('library-title-ar').value,
+                    tr: document.getElementById('library-title-tr').value,
+                    en: document.getElementById('library-title-en').value
+                },
+                author: document.getElementById('library-author').value,
+                description: {
+                    ar: document.getElementById('library-desc-ar').value,
+                    tr: document.getElementById('library-desc-tr').value,
+                    en: document.getElementById('library-desc-en').value
+                },
+                year: parseInt(document.getElementById('library-year').value),
+                type: document.getElementById('library-type').value
+            };
+
+            try {
+                const response = await fetch('/api/library', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(libraryItem)
+                });
+
+                if (response.ok) {
+                    showAlert('تم إضافة العنصر للمكتبة بنجاح');
+                    this.reset();
+                    loadLibrary();
+                } else {
+                    showAlert('فشل في إضافة العنصر للمكتبة', 'danger');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال', 'danger');
+            }
+        });
+
+        // تحميل المكتبة
+        async function loadLibrary() {
+            try {
+                const response = await fetch('/api/library');
+                const data = await response.json();
+                const list = document.getElementById('library-list');
+                
+                list.innerHTML = '<h4>عناصر المكتبة الحالية:</h4>';
+                data.library.forEach(item => {
+                    const element = document.createElement('div');
+                    element.className = 'item';
+                    element.innerHTML = `
+                        <h4>${item.title.ar}</h4>
+                        <p><strong>المؤلف:</strong> ${item.author}</p>
+                        <p><strong>سنة النشر:</strong> ${item.year}</p>
+                        <p><strong>النوع:</strong> ${item.type}</p>
+                        <button class="btn btn-danger" onclick="deleteLibraryItem('${item.id}')">حذف</button>
+                    `;
+                    list.appendChild(element);
+                });
+            } catch (error) {
+                showAlert('فشل في تحميل المكتبة', 'danger');
+            }
+        }
+
+        // حذف عنصر من المكتبة
+        async function deleteLibraryItem(id) {
+            if (confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
+                try {
+                    const response = await fetch(`/api/library/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        showAlert('تم حذف العنصر بنجاح');
+                        loadLibrary();
+                    } else {
+                        showAlert('فشل في حذف العنصر', 'danger');
+                    }
+                } catch (error) {
+                    showAlert('خطأ في الاتصال', 'danger');
+                }
+            }
+        }
+
+        // تحميل البيانات عند بدء الصفحة
+        window.addEventListener('load', function() {
+            loadProducts();
+            loadEvents();
+            loadLibrary();
+        });
+    </script>
+</body>
+</html>
+

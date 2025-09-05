@@ -1,0 +1,110 @@
+/* ألوان الهوية البصرية للوحة الإدارة */
+:root {
+    /* ألوان الموقع الأساسية */
+    --primary-color: #2c5530;
+    --secondary-color: #8B4513;
+    --accent-color: #DAA520;
+    --text-color: #2c3e50;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+    --border-color: #e9ecef;
+    --shadow-light: rgba(44, 85, 48, 0.1);
+    --shadow-medium: rgba(44, 85, 48, 0.2);
+    --shadow-dark: rgba(44, 85, 48, 0.3);
+}
+
+body {
+    background: linear-gradient(135deg, var(--light-bg) 0%, #e8f5e8 100%) !important;
+    color: var(--text-color) !important;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    color: var(--white) !important;
+    box-shadow: 0 10px 30px var(--shadow-dark) !important;
+}
+
+.header h1 {
+    color: var(--white) !important;
+}
+
+.header p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.lang-btn {
+    background: var(--white) !important;
+    color: var(--primary-color) !important;
+    border: 2px solid var(--primary-color) !important;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+    box-shadow: 0 5px 15px var(--shadow-medium) !important;
+}
+
+.stat-card {
+    border-top: 4px solid var(--primary-color) !important;
+}
+
+.stat-card .icon {
+    color: var(--primary-color) !important;
+}
+
+.stat-card .number {
+    color: var(--primary-color) !important;
+}
+
+.section-header .icon {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.section-header h3 {
+    color: var(--primary-color) !important;
+}
+
+.btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    color: var(--white) !important;
+}
+
+.btn:hover {
+    box-shadow: 0 5px 15px var(--shadow-medium) !important;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #B8860B 100%) !important;
+}
+
+.modal-header h2 {
+    color: var(--primary-color) !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px var(--shadow-light) !important;
+}
+
+.product-card h4 {
+    color: var(--primary-color) !important;
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: var(--white) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+

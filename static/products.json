@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": "test-product-1",
+      "name": {
+        "ar": "كوفية فلسطينية تراثية",
+        "tr": "Geleneksel Filistin Kefiyesi",
+        "en": "Traditional Palestinian Keffiyeh"
+      },
+      "description": {
+        "ar": "كوفية فلسطينية أصيلة مصنوعة يدوياً من أجود أنواع القطن، ترمز للهوية الفلسطينية العريقة",
+        "tr": "El yapımı, en kaliteli pamuktan üretilmiş özgün Filistin kefiyesi, köklü Filistin kimliğini simgeler",
+        "en": "Authentic Palestinian keffiyeh handmade from finest cotton, symbolizing the deep-rooted Palestinian identity"
+      },
+      "price": 150,
+      "category": "clothing",
+      "image": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPgogIDx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+S2VmZml5ZWg8L3RleHQ+Cjwvc3ZnPg==",
+      "created_at": "2025-08-30T10:00:00.000000"
+    },
+    {
+      "id": "test-product-2",
+      "name": {
+        "ar": "زيت زيتون فلسطيني",
+        "tr": "Filistin Zeytinyağı",
+        "en": "Palestinian Olive Oil"
+      },
+      "description": {
+        "ar": "زيت زيتون بكر ممتاز من أشجار الزيتون الفلسطينية المعمرة، طعم أصيل ونكهة مميزة",
+        "tr": "Filistin'in asırlık zeytin ağaçlarından elde edilen sızma zeytinyağı, özgün tat ve özel aroma",
+        "en": "Extra virgin olive oil from ancient Palestinian olive trees, authentic taste and distinctive flavor"
+      },
+      "price": 85,
+      "category": "food",
+      "image": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPgogIDx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+T2xpdmUgT2lsPC90ZXh0Pgo8L3N2Zz4=",
+      "created_at": "2025-08-30T10:15:00.000000"
+    },
+    {
+      "name": {
+        "ar": "h",
+        "tr": "ms",
+        "en": "öx"
+      },
+      "description": {
+        "ar": "sdq\n",
+        "tr": "msx",
+        "en": "sşlam"
+      },
+      "price": 55,
+      "category": "clothing",
+      "id": "a34762a4-04b3-4572-82a4-865b227d329a",
+      "created_at": "2025-08-31T16:21:48.616551"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "contact": {
+    "address": "إسطنبول، تركيا",
+    "email": "info@dar-heritage.com",
+    "phone": "+90 553 828 62 35"
+  },
+  "content": {
+    "about": {
+      "content": {
+        "ar": "مركز دار للتراث الفلسطيني هو مؤسسة ثقافية تهدف إلى الحفاظ على التراث الفلسطيني وتعزيز الهوية الثقافية.",
+        "en": "Dar Palestinian Heritage Center is a cultural institution aimed at preserving Palestinian heritage and strengthening cultural identity.",
+        "tr": "Dar Filistin Miras Merkezi, Filistin mirasını korumayı ve kültürel kimliği güçlendirmeyi amaçlayan bir kültür kurumudur."
+      },
+      "title": {
+        "ar": "من نحن",
+        "en": "About Us",
+        "tr": "Hakkımızda"
+      }
+    },
+    "home": {
+      "subtitle": {
+        "ar": "نحافظ على التراث الفلسطيني بعمق الأصالة ونعزز الفخر بالهوية",
+        "en": "We preserve Palestinian heritage with deep authenticity and strengthen identity pride",
+        "tr": "Filistin mirasını özgünlüğün derinliğiyle koruyoruz ve kimlik gururunu güçlendiriyoruz"
+      },
+      "title": {
+        "ar": "دار - مركز التراث الفلسطيني",
+        "en": "Dar - Palestinian Heritage Center",
+        "tr": "Dar - Filistin Miras Merkezi"
+      }
+    }
+  },
+  "social": {
+    "facebook": "https://facebook.com/dar-heritage",
+    "instagram": "https://instagram.com/dar-heritage",
+    "twitter": "https://twitter.com/dar-heritage"
+  },
+  "whatsapp": {
+    "enabled": true,
+    "number": "+905538286235"
+  }
+}
