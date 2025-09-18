@@ -618,3 +618,24 @@ function testWhatsApp() {
     }
 }
 
+// حذف جميع البيانات (منتجات/فعاليات/مكتبة)
+async function resetAllData() {
+    if (!confirm('سيتم حذف جميع المنتجات والفعاليات والكتب. هل تريد المتابعة؟')) return;
+    try {
+        const response = await fetch('/api/reset', { method: 'POST' });
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
+        if (response.ok) {
+            showAlert('تم حذف جميع البيانات بنجاح', 'success');
+            loadProducts();
+        } else {
+            showAlert('فشل في حذف البيانات', 'danger');
+        }
+    } catch (error) {
+        console.error('خطأ في حذف البيانات:', error);
+        showAlert('خطأ في حذف البيانات', 'danger');
+    }
+}
+
