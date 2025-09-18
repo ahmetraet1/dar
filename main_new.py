@@ -40,6 +40,17 @@ def save_json_file(filename, data):
     except:
         return False
 
+# نقطة نهاية لإعادة تهيئة جميع البيانات (تفريغ المنتجات والفعاليات والمكتبة)
+@app.route('/api/reset', methods=['POST'])
+def reset_all():
+    try:
+        save_json_file(PRODUCTS_FILE, {'products': []})
+        save_json_file(EVENTS_FILE, {'events': []})
+        save_json_file(LIBRARY_FILE, {'library': []})
+        return jsonify({'success': True, 'message': 'تمت التهيئة وحذف جميع البيانات'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 # API المنتجات
 @app.route('/api/products', methods=['GET'])
 def get_products():

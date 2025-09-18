@@ -147,6 +147,9 @@
         <div class="header">
             <h1>لوحة الإدارة - دار التراث الفلسطيني</h1>
             <p>إدارة المنتجات والفعاليات والمكتبة التراثية</p>
+            <div style="margin-top:15px;">
+                <button class="btn btn-danger" onclick="resetAllData()">حذف كل البيانات (منتجات/فعاليات/مكتبة)</button>
+            </div>
         </div>
 
         <div id="alerts"></div>
@@ -552,6 +555,24 @@
             loadEvents();
             loadLibrary();
         });
+
+        // حذف كل البيانات
+        async function resetAllData() {
+            if (!confirm('سيتم حذف جميع المنتجات والفعاليات والكتب. هل أنت متأكد؟')) return;
+            try {
+                const response = await fetch('/api/reset', { method: 'POST' });
+                if (response.ok) {
+                    showAlert('تم حذف جميع البيانات بنجاح');
+                    loadProducts();
+                    loadEvents();
+                    loadLibrary();
+                } else {
+                    showAlert('فشل في حذف البيانات', 'danger');
+                }
+            } catch (e) {
+                showAlert('خطأ في الاتصال', 'danger');
+            }
+        }
     </script>
 </body>
 </html>

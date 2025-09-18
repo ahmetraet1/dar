@@ -27,11 +27,21 @@ db.init_app(app)
 ADMIN_USERNAME = "darnewsirin"
 ADMIN_PASSWORD = "DDaarr553.."
 
-# إنشاء ملف المنتجات إذا لم يكن موجوداً
+# مسارات ملفات البيانات
 products_file = os.path.join(os.path.dirname(__file__), 'static', 'products.json')
+events_file = os.path.join(os.path.dirname(__file__), 'static', 'events.json')
+library_file = os.path.join(os.path.dirname(__file__), 'static', 'library.json')
+
+# إنشاء ملفات البيانات إذا لم تكن موجودة
 if not os.path.exists(products_file):
     with open(products_file, 'w', encoding='utf-8') as f:
         json.dump({"products": []}, f, ensure_ascii=False, indent=2)
+if not os.path.exists(events_file):
+    with open(events_file, 'w', encoding='utf-8') as f:
+        json.dump({"events": []}, f, ensure_ascii=False, indent=2)
+if not os.path.exists(library_file):
+    with open(library_file, 'w', encoding='utf-8') as f:
+        json.dump({"library": []}, f, ensure_ascii=False, indent=2)
 
 # إنشاء ملف إعدادات الموقع
 settings_file = os.path.join(os.path.dirname(__file__), 'static', 'settings.json')
@@ -174,6 +184,99 @@ def update_product(product_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# API للفعاليات
+@app.route('/api/events', methods=['GET'])
+def get_events():
+    try:
+        with open(events_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/events', methods=['POST'])
+@login_required
+def add_event():
+    try:
+        data_in = request.json
+        data_in['id'] = str(uuid.uuid4())
+        data_in['created_at'] = datetime.now().isoformat()
+        with open(events_file, 'r', encoding='utf-8') as f:
+            events_data = json.load(f)
+        events_data['events'].append(data_in)
+        with open(events_file, 'w', encoding='utf-8') as f:
+            json.dump(events_data, f, ensure_ascii=False, indent=2)
+        return jsonify({"status": "success", "event": data_in})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/events/<event_id>', methods=['DELETE'])
+@login_required
+def delete_event(event_id):
+    try:
+        with open(events_file, 'r', encoding='utf-8') as f:
+            events_data = json.load(f)
+        events_data['events'] = [e for e in events_data['events'] if e['id'] != event_id]
+        with open(events_file, 'w', encoding='utf-8') as f:
+            json.dump(events_data, f, ensure_ascii=False, indent=2)
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# API للمكتبة
+@app.route('/api/library', methods=['GET'])
+def get_library():
+    try:
+        with open(library_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/library', methods=['POST'])
+@login_required
+def add_library_item():
+    try:
+        data_in = request.json
+        data_in['id'] = str(uuid.uuid4())
+        data_in['created_at'] = datetime.now().isoformat()
+        with open(library_file, 'r', encoding='utf-8') as f:
+            library_data = json.load(f)
+        library_data['library'].append(data_in)
+        with open(library_file, 'w', encoding='utf-8') as f:
+            json.dump(library_data, f, ensure_ascii=False, indent=2)
+        return jsonify({"status": "success", "item": data_in})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/library/<item_id>', methods=['DELETE'])
+@login_required
+def delete_library_item(item_id):
+    try:
+        with open(library_file, 'r', encoding='utf-8') as f:
+            library_data = json.load(f)
+        library_data['library'] = [i for i in library_data['library'] if i['id'] != item_id]
+        with open(library_file, 'w', encoding='utf-8') as f:
+            json.dump(library_data, f, ensure_ascii=False, indent=2)
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# نقطة لإعادة التهيئة (حذف كل البيانات)
+@app.route('/api/reset', methods=['POST'])
+@login_required
+def reset_all():
+    try:
+        with open(products_file, 'w', encoding='utf-8') as f:
+            json.dump({"products": []}, f, ensure_ascii=False, indent=2)
+        with open(events_file, 'w', encoding='utf-8') as f:
+            json.dump({"events": []}, f, ensure_ascii=False, indent=2)
+        with open(library_file, 'w', encoding='utf-8') as f:
+            json.dump({"library": []}, f, ensure_ascii=False, indent=2)
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/products/<product_id>', methods=['DELETE'])
 @login_required
 def delete_product(product_id):
@@ -218,7 +321,7 @@ def update_settings():
 def admin_panel():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect('/login')
-    return send_from_directory(app.static_folder, 'admin.html')
+    return send_from_directory(app.static_folder, 'simple-admin.html')
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

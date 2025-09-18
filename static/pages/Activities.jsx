@@ -1,3 +1,4 @@
+import React from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, Clock, MapPin, Users, ArrowRight } from 'lucide-react'
 import { Button } from '../components/ui/button'
@@ -49,115 +50,31 @@ const Activities = ({ currentLanguage }) => {
     }
   }
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: {
-        ar: 'ورشة التطريز الفلسطيني التقليدي',
-        tr: 'Geleneksel Filistin Nakış Atölyesi',
-        en: 'Traditional Palestinian Embroidery Workshop'
-      },
-      description: {
-        ar: 'تعلم فن التطريز الفلسطيني التقليدي مع خبراء متخصصين',
-        tr: 'Uzman eğitmenlerle geleneksel Filistin nakış sanatını öğrenin',
-        en: 'Learn traditional Palestinian embroidery art with expert instructors'
-      },
-      date: '2024-02-15',
-      time: '14:00',
-      location: {
-        ar: 'مركز دار - إسطنبول',
-        tr: 'Dar Merkezi - İstanbul',
-        en: 'Dar Center - Istanbul'
-      },
-      capacity: 20,
-      price: 0,
-      image: '/api/placeholder/400/250',
-      category: 'workshop'
-    },
-    {
-      id: 2,
-      title: {
-        ar: 'معرض الفن التراثي الفلسطيني',
-        tr: 'Filistin Miras Sanatı Sergisi',
-        en: 'Palestinian Heritage Art Exhibition'
-      },
-      description: {
-        ar: 'معرض شامل للفنون والحرف التراثية الفلسطينية',
-        tr: 'Filistin miras sanatları ve el sanatlarının kapsamlı sergisi',
-        en: 'Comprehensive exhibition of Palestinian heritage arts and crafts'
-      },
-      date: '2024-02-20',
-      time: '10:00',
-      location: {
-        ar: 'قاعة المعارض - مركز دار',
-        tr: 'Sergi Salonu - Dar Merkezi',
-        en: 'Exhibition Hall - Dar Center'
-      },
-      capacity: 100,
-      price: 0,
-      image: '/api/placeholder/400/250',
-      category: 'exhibition'
-    },
-    {
-      id: 3,
-      title: {
-        ar: 'أمسية موسيقية تراثية',
-        tr: 'Miras Müzik Gecesi',
-        en: 'Heritage Music Evening'
-      },
-      description: {
-        ar: 'أمسية موسيقية تراثية مع فرقة موسيقية متخصصة',
-        tr: 'Uzman müzik grubu ile miras müzik gecesi',
-        en: 'Heritage music evening with specialized music group'
-      },
-      date: '2024-02-25',
-      time: '19:00',
-      location: {
-        ar: 'المسرح الرئيسي - مركز دار',
-        tr: 'Ana Tiyatro - Dar Merkezi',
-        en: 'Main Theater - Dar Center'
-      },
-      capacity: 150,
-      price: 50,
-      image: '/api/placeholder/400/250',
-      category: 'music'
-    }
-  ]
+  const upcomingEvents = []
+  const pastEvents = []
 
-  const pastEvents = [
-    {
-      id: 4,
-      title: {
-        ar: 'ورشة الطبخ الفلسطيني',
-        tr: 'Filistin Mutfağı Atölyesi',
-        en: 'Palestinian Cooking Workshop'
-      },
-      description: {
-        ar: 'تعلم طبخ الأطباق الفلسطينية التقليدية',
-        tr: 'Geleneksel Filistin yemeklerini pişirmeyi öğrenin',
-        en: 'Learn to cook traditional Palestinian dishes'
-      },
-      date: '2024-01-20',
-      participants: 25,
-      image: '/api/placeholder/400/250'
-    },
-    {
-      id: 5,
-      title: {
-        ar: 'محاضرة تاريخ فلسطين',
-        tr: 'Filistin Tarihi Konferansı',
-        en: 'Palestine History Lecture'
-      },
-      description: {
-        ar: 'محاضرة شاملة عن تاريخ فلسطين وحضارتها',
-        tr: 'Filistin tarihi ve medeniyeti hakkında kapsamlı konferans',
-        en: 'Comprehensive lecture on Palestine history and civilization'
-      },
-      date: '2024-01-15',
-      participants: 80,
-      image: '/api/placeholder/400/250'
+  // تحميل الفعاليات من API
+  // سنعرض فقط من /api/events، ويمكن مستقبلاً فصل القادمة/السابقة حسب التاريخ
+  // هنا نستخدم useEffect للتحميل عند الدخول
+  // ملاحظة: هذه الصفحة للعرض فقط، لا تعديل
+  React.useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/events')
+        if (res.ok) {
+          const data = await res.json()
+          // data.events مصفوفة عامة؛ لعدم وجود حقل حالة، سنعرضها كقائمة واحدة في قسم القادمة
+          // يمكن لاحقاً التفريق حسب تاريخ اليوم
+          setEvents(data.events || [])
+        }
+      } catch (e) {
+        // تجاهل الخطأ للعرض الهادئ
+      }
     }
-  ]
+    fetchEvents()
+  }, [])
+
+  const [events, setEvents] = React.useState([])
 
   const lang = content[currentLanguage] || content.ar
   const isRTL = currentLanguage === 'ar'
@@ -210,7 +127,7 @@ const Activities = ({ currentLanguage }) => {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map((event, index) => (
+            {events.map((event, index) => (
               <motion.div
                 key={event.id}
                 initial={{ opacity: 0, y: 50 }}
@@ -248,19 +165,25 @@ const Activities = ({ currentLanguage }) => {
                       <Calendar className="w-4 h-4 mr-2" />
                       {formatDate(event.date)}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="w-4 h-4 mr-2" />
-                      {event.time}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      {event.location[currentLanguage]}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="w-4 h-4 mr-2" />
-                      {event.capacity} {currentLanguage === 'ar' ? 'مشارك' : 
-                                      currentLanguage === 'tr' ? 'katılımcı' : 'participants'}
-                    </div>
+                    {event.time && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Clock className="w-4 h-4 mr-2" />
+                        {event.time}
+                      </div>
+                    )}
+                    {event.location && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        {typeof event.location === 'object' ? event.location[currentLanguage] : event.location}
+                      </div>
+                    )}
+                    {event.capacity && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Users className="w-4 h-4 mr-2" />
+                        {event.capacity} {currentLanguage === 'ar' ? 'مشارك' : 
+                                        currentLanguage === 'tr' ? 'katılımcı' : 'participants'}
+                      </div>
+                    )}
                     
                     <div className="pt-4">
                       <Button 

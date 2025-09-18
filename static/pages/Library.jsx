@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Book, Download, Search, Filter, Eye, Star } from 'lucide-react'
 import { Button } from '../components/ui/button'
@@ -75,153 +75,35 @@ const Library = ({ currentLanguage }) => {
     }
   }
 
-  const books = [
-    {
-      id: 1,
-      title: {
-        ar: 'تاريخ فلسطين الحديث',
-        tr: 'Modern Filistin Tarihi',
-        en: 'Modern History of Palestine'
-      },
-      author: {
-        ar: 'د. محمد أحمد',
-        tr: 'Dr. Muhammed Ahmed',
-        en: 'Dr. Mohammed Ahmed'
-      },
-      description: {
-        ar: 'دراسة شاملة للتاريخ الفلسطيني الحديث والمعاصر',
-        tr: 'Modern ve çağdaş Filistin tarihinin kapsamlı çalışması',
-        en: 'Comprehensive study of modern and contemporary Palestinian history'
-      },
-      category: 'history',
-      pages: 320,
-      year: 2023,
-      language: {
-        ar: 'العربية',
-        tr: 'Arapça',
-        en: 'Arabic'
-      },
-      rating: 4.8,
-      cover: '/api/placeholder/200/280',
-      free: true
-    },
-    {
-      id: 2,
-      title: {
-        ar: 'الفنون الشعبية الفلسطينية',
-        tr: 'Filistin Halk Sanatları',
-        en: 'Palestinian Folk Arts'
-      },
-      author: {
-        ar: 'فاطمة الزهراء',
-        tr: 'Fatma ez-Zehra',
-        en: 'Fatima Al-Zahra'
-      },
-      description: {
-        ar: 'موسوعة شاملة للفنون والحرف الشعبية الفلسطينية',
-        tr: 'Filistin halk sanatları ve el sanatlarının kapsamlı ansiklopedisi',
-        en: 'Comprehensive encyclopedia of Palestinian folk arts and crafts'
-      },
-      category: 'arts',
-      pages: 450,
-      year: 2022,
-      language: {
-        ar: 'العربية',
-        tr: 'Arapça',
-        en: 'Arabic'
-      },
-      rating: 4.9,
-      cover: '/api/placeholder/200/280',
-      free: true
-    },
-    {
-      id: 3,
-      title: {
-        ar: 'التراث الشعبي الفلسطيني',
-        tr: 'Filistin Halk Mirası',
-        en: 'Palestinian Folk Heritage'
-      },
-      author: {
-        ar: 'أحمد سالم',
-        tr: 'Ahmed Salem',
-        en: 'Ahmed Salem'
-      },
-      description: {
-        ar: 'جمع وتوثيق للتراث الشعبي الفلسطيني الأصيل',
-        tr: 'Özgün Filistin halk mirasının toplanması ve belgelenmesi',
-        en: 'Collection and documentation of authentic Palestinian folk heritage'
-      },
-      category: 'culture',
-      pages: 280,
-      year: 2023,
-      language: {
-        ar: 'العربية',
-        tr: 'Arapça',
-        en: 'Arabic'
-      },
-      rating: 4.7,
-      cover: '/api/placeholder/200/280',
-      free: true
-    },
-    {
-      id: 4,
-      title: {
-        ar: 'الأدب الفلسطيني المعاصر',
-        tr: 'Çağdaş Filistin Edebiyatı',
-        en: 'Contemporary Palestinian Literature'
-      },
-      author: {
-        ar: 'سميرة خليل',
-        tr: 'Semira Halil',
-        en: 'Samira Khalil'
-      },
-      description: {
-        ar: 'دراسة نقدية للأدب الفلسطيني المعاصر وأعلامه',
-        tr: 'Çağdaş Filistin edebiyatı ve önde gelen isimlerinin eleştirel çalışması',
-        en: 'Critical study of contemporary Palestinian literature and its prominent figures'
-      },
-      category: 'literature',
-      pages: 380,
-      year: 2022,
-      language: {
-        ar: 'العربية',
-        tr: 'Arapça',
-        en: 'Arabic'
-      },
-      rating: 4.6,
-      cover: '/api/placeholder/200/280',
-      free: true
-    },
-    {
-      id: 5,
-      title: {
-        ar: 'دراسات في التراث الفلسطيني',
-        tr: 'Filistin Mirası Üzerine Çalışmalar',
-        en: 'Studies in Palestinian Heritage'
-      },
-      author: {
-        ar: 'مجموعة باحثين',
-        tr: 'Araştırmacı Grubu',
-        en: 'Research Group'
-      },
-      description: {
-        ar: 'مجموعة من البحوث والدراسات المتخصصة في التراث الفلسطيني',
-        tr: 'Filistin mirası konusunda uzmanlaşmış araştırma ve çalışmalar koleksiyonu',
-        en: 'Collection of specialized research and studies on Palestinian heritage'
-      },
-      category: 'research',
-      pages: 520,
-      year: 2023,
-      language: {
-        ar: 'العربية',
-        tr: 'Arapça',
-        en: 'Arabic'
-      },
-      rating: 4.8,
-      cover: '/api/placeholder/200/280',
-      free: true
+  const [books, setBooks] = useState([])
+
+  // تحميل الكتب من API
+  useEffect(() => {
+    const loadBooks = async () => {
+      try {
+        const res = await fetch('/api/library')
+        if (res.ok) {
+          const data = await res.json()
+          setBooks((data.library || []).map(item => ({
+            id: item.id,
+            title: item.title,
+            author: item.author,
+            description: item.description,
+            category: item.category || item.type || 'all',
+            pages: item.pages,
+            year: item.year,
+            language: item.language || { ar: 'العربية', tr: 'Arapça', en: 'Arabic' },
+            rating: item.rating || 0,
+            cover: item.cover || '/api/placeholder/200/280',
+            free: item.free !== false
+          })))
+        }
+      } catch (e) {
+        // تجاهل للأخطاء الصامتة
+      }
     }
-  ]
+    loadBooks()
+  }, [])
 
   const lang = content[currentLanguage] || content.ar
   const isRTL = currentLanguage === 'ar'
